@@ -29,18 +29,15 @@ async def translate_traditional_to_simplified_chinese_json(query_id: Optional[in
     """
     Check the type if it's a JSON string or a JSON object literal
     """
-    # If it's a string, attempt to convert it to a JSON object literal
-    if type(query) == str:
+    # Use try and except to check if json.loads(query) works
+    try:
         query_json = json.loads(query)
-        # If after converting and it's not a dictionary, return "invalid query"
-        if not type(query_json) == dict:
-            return query_json
-    # If the query is not a dictionary, e.g: int, boolean
-    elif not type(query) == dict:
-        return "This is not a dictionary"
-    # If it's a valid query, set query_json as a variable
-    else:
-        query_json = query
+    except:
+        return f"{query} is is not a valid query"
+
+    if not type(query_json) == dict:
+        return f"{query_json} is not in JSON format"
+    
 
     # Transform the field's values into string format if they're not string
     query_json_clean = {field:str(value) for field, value in query_json.items()}
