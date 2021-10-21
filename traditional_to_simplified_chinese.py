@@ -6,12 +6,14 @@ import json
 import chinese_converter as cc
 import re
 
+from fastapi.param_functions import Body
+
 description = """
 This API translates traditional Chinese to simplified Chinese.
 """
 app = FastAPI(title="Traditional to simplified Chinese translation API", description= description)
 
-@app.get("/translateQuery/", tags = ["Translate traditional Chinese to simplified Chinese"])
+@app.post("/translateQuery/", tags = ["Translate traditional Chinese to simplified Chinese"])
 async def translate_traditional_to_simplified_chinese(queryID: Optional[int] = 0, query: Optional[str] = Query(None, alias="q")):
     # If there are Chinese characters present
     if re.search("[\u4e00-\u9FFF]", query):
@@ -29,7 +31,8 @@ async def translate_traditional_to_simplified_chinese_json(queryId: Optional[int
     """
     API to translate JSON object with traditional Chinese to simplified Chinese.
     """
-    return query
+    
+    
     # Use try and except to check if json.loads(query) works
     try:
         query_json = json.loads(query)
@@ -38,6 +41,8 @@ async def translate_traditional_to_simplified_chinese_json(queryId: Optional[int
 
     if not type(query_json) == dict:
         return f"{query_json} is not in JSON format"
+    
+    
     
 
     # Transform the field's values into string format if they're not string
