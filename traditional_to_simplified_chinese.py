@@ -1,6 +1,6 @@
 # main.py
 
-from typing import Optional
+from typing import List, Optional, Set, Tuple
 from fastapi import FastAPI, Query
 import json
 import chinese_converter as cc
