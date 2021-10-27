@@ -1,5 +1,6 @@
 # main.py
 
+from json.decoder import JSONDecodeError
 from typing import List, Optional, Set, Tuple
 from fastapi import FastAPI, Query
 import json
@@ -33,12 +34,12 @@ async def translate_traditional_to_simplified_chinese_json(queryId: Optional[int
     """
     # Use try and except to check if json.loads(query) works
     try:
+        """
+        Deserialize s (a str, bytes or bytearray instance containing a JSON document) to a Python object using this conversion table.
+        """       
         query_json = json.loads(query)
-    except:
-        return f"{query} is is not a valid query"
-
-    if not type(query_json) == dict:
-        return f"{query_json} is not in JSON format"
+    except JSONDecodeError:
+        return f"{query} is not a valid query. It needs to be in JSON format."
     
     # Transform the field's values into string format if they're not string
     query_json_clean = {field:str(value) for field, value in query_json.items()}
